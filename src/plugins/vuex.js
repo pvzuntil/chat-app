@@ -3,17 +3,21 @@ import vuex from 'vuex'
 
 vue.use(vuex)
 
-export default new vuex.Store({
-    state: {
-        drawer: true,
-        rightDrawer: false
+const state =  {
+    drawer: true,
+    rightDrawer: false
+}
+
+const mutations = {
+    toggleDrawer(state) {
+        state.drawer = !state.drawer
     },
-    mutations: {
-        toggleDrawer(state) {
-            state.drawer = !state.drawer
-        },
-        toggleRightDrawer(state) {
-            state.rightDrawer = !state.rightDrawer
-        },
-    }
+    toggleRightDrawer(state) {
+        state.rightDrawer = !state.rightDrawer
+    },
+}
+
+export default new vuex.Store({
+    state,
+    mutations
 })

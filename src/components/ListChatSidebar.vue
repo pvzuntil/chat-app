@@ -52,7 +52,7 @@
 
         <v-list-item-content>
           <v-list-item-title>User {{ n }}</v-list-item-title>
-          <v-list-item-subtitle>Subtitle</v-list-item-subtitle>
+          <v-list-item-subtitle class="grey--text font-weight-regular">Subtitle</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
