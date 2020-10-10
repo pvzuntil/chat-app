@@ -7,6 +7,8 @@
       outlined
       flat
       label="Ketik pesan ..."
+      append-icon="mdi-send"
+      prepend-icon="mdi-emoticon-happy-outline"
     ></v-text-field>
   </v-footer>
 </template>
