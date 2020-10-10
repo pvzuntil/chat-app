@@ -5,7 +5,7 @@
     </v-btn>
     <span>Chatting Dengan Saya</span>
     <v-spacer></v-spacer>
-    <v-btn flat icon color="primary" @click="$store.commit('toggleRightDrawer')">
+    <v-btn icon color="primary" @click="$store.commit('toggleRightDrawer')">
         <v-icon>mdi-information</v-icon>
     </v-btn>
   </v-app-bar>

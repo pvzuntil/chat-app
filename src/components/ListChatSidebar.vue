@@ -1,11 +1,13 @@
 <template>
-  <v-navigation-drawer v-model="$store.state.drawer" app width="320">
+  <v-navigation-drawer v-model="$store.state.drawer" app width="320" hide-overlay>
     <v-navigation-drawer
       v-model="$store.state.drawer"
       absolute
       color="grey lighten-3"
       mini-variant
       expand-on-hover
+      hide-overlay
+      fixed
     >
       <v-avatar
         class="d-block text-center mx-auto mt-4"

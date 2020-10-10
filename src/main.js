@@ -10,5 +10,8 @@ new Vue({
   render: h => h(App),
   router,
   vuetify,
-  store
+  store,
+  beforeCreate(){
+    this.$store.commit('initVue')
+  }
 }).$mount('#app')

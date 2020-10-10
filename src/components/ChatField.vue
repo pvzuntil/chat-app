@@ -1,5 +1,5 @@
 <template>
-  <v-footer app color="transparent" height="72" inset>
+  <v-footer app color="white" height="72" inset>
     <v-text-field
       dense
       hide-details
