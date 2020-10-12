@@ -2,6 +2,7 @@ const router = require('express').Router()
 const mres = require('../lib/MRes')
 const mvalid = require('../lib/MValid')
 const { userValidation } = require('../validation')
+const bcrypt = require('bcrypt')
 
 const UserModel = require('../model/UserModel')
 
@@ -21,11 +22,14 @@ router.post('/signup', async (req, res) => {
         return res.status(200).send(mres(0, 'Email sudah digunakan, silahkan coba yang lain !'))
     }
 
+    let genSalt = await bcrypt.genSalt(10)
+    let hashPass = await bcrypt.hash(data.password, genSalt)
+
     try {
         const user = UserModel({
             name: data.name,
             email: data.email,
-            password: data.password
+            password: hashPass
         })
         let saveUser = await user.save()
         return res.status(200).send(mres(1, 'Berhasil menambah user', saveUser))
