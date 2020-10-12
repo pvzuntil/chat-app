@@ -3,6 +3,7 @@ const mres = require('../lib/MRes')
 const mvalid = require('../lib/MValid')
 const { userValidation } = require('../validation')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const UserModel = require('../model/UserModel')
 
@@ -10,8 +11,8 @@ router.post('/signup', async (req, res) => {
 
     let data = req.body
 
-    let {error}= userValidation(data)
-    if(error){
+    let { error } = userValidation(data)
+    if (error) {
         return res.status(400).send(mres(0, 'Validasi gagal !', mvalid(error)))
     }
 
@@ -38,8 +39,31 @@ router.post('/signup', async (req, res) => {
     }
 })
 
-router.post('/login', (req, res) => {
-    return res.send(mres(1, 'login'))
+router.post('/login', async (req, res) => {
+    let data = req.body
+
+    const getUser = await UserModel.findOne({
+        email: data.email
+    })
+
+    if (!getUser) {
+        return res.status(200).send(mres(0, 'Email or password are in correnct !'))
+    }
+
+    let comparePass = await bcrypt.compare(data.password, getUser.password)
+    if (!comparePass) {
+        return res.status(200).send(mres(0, 'Email or password are in correnct !'))
+    }
+
+    let genjwt = jwt.sign({
+        id:getUser._id,
+        name: getUser.name,
+        email: getUser.email
+    }, process.env.JWT_SECERT)
+
+    return res.status(200).send(mres(1, 'Berhasil login !', {
+        token: genjwt
+    }))
 })
 
 module.exports = router
