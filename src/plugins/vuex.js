@@ -1,6 +1,7 @@
 import vue from 'vue'
 import vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
+// import Cookies from 'js-cookie'
 
 vue.use(vuex)
 
@@ -11,7 +12,7 @@ const state =  {
 
 const mutations = {
     initVue(){
-        // INIT VUE
+        // console.log(Cookies.get('IS_LOGIN'), Cookies.get('AUTH_TOKEN'));
     },
     toggleDrawer(state) {
         state.drawer = !state.drawer

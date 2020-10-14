@@ -17,6 +17,12 @@ const sw = {
             timer: 2000,
             toast: true
         })
+    },
+    confirm(args){
+        return Vue.swal({
+            ...args,
+            showCancelButton: true
+        })
     }
 }
 

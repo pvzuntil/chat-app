@@ -32,7 +32,7 @@
       </v-list>
       <template v-slot:append>
         <v-list dense rounded>
-          <v-list-item link>
+          <v-list-item link @click="doLogout">
             <v-list-item-icon>
               <v-icon color="red">mdi-logout</v-icon>
             </v-list-item-icon>
@@ -63,6 +63,8 @@
 
 <script>
 import SearchField from "./SearchField";
+import sw from '../plugins/swal'
+import Cookies from 'js-cookie'
 export default {
   components: {
     SearchField,
@@ -82,6 +84,21 @@ export default {
       },
     ],
   }),
+  methods:{
+    doLogout(){
+      return sw.confirm({
+        title: 'Perhatian !',
+        text: 'Apakah anda yakin ingin keluar .?',
+        icon: 'warning',
+      }).then((result)=>{
+        if(result.value){
+          Cookies.remove('IS_AUTH')
+          Cookies.remove('AUTH_TOKEN')
+          this.$router.replace('/login')
+        }
+      })
+    }
+  }
 };
 </script>
 
