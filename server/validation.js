@@ -16,6 +16,18 @@ const validation = {
                 .min(6)
                 .label('password')
         }).validate(data)
+    },
+    loginValidation(data){
+        return Joi.object({
+            email: Joi.string()
+                .required()
+                .email()
+                .label('email'),
+            password: Joi.string()
+                .required()
+                .min(6)
+                .label('password')
+        }).validate(data)
     }
 }
 

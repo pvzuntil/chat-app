@@ -6,6 +6,14 @@ import store from './plugins/vuex'
 
 Vue.config.productionTip = false
 
+import VueSweetalert2 from 'vue-sweetalert2'
+Vue.use(VueSweetalert2);
+
+
+import VueGlobalVariable from 'vue-global-var'
+import globalVars from './plugins/globalVars'
+Vue.use(VueGlobalVariable, globalVars)
+
 new Vue({
   render: h => h(App),
   router,

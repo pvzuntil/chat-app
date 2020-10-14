@@ -12,6 +12,8 @@
                 hide-details
                 rounded
                 clearable
+                dense
+                v-model="field.login.email"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -22,6 +24,8 @@
                 outlined
                 rounded
                 hide-details
+                dense
+                v-model="field.login.password"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -37,7 +41,7 @@
                 @click="dialog.signup = true"
                 >SIGNUP</v-btn
               >
-              <v-btn color="primary" small rounded>LOGIN</v-btn>
+              <v-btn color="primary" small rounded @click="doLogin()" :loading="loading.login">LOGIN</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -57,6 +61,8 @@
                 outlined
                 rounded
                 hide-details
+                dense
+                v-model="field.name"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -68,6 +74,8 @@
                 outlined
                 rounded
                 hide-details
+                dense
+                v-model="field.email"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -80,6 +88,8 @@
                 rounded
                 type="password"
                 hide-details
+                dense
+                v-model="field.password"
               ></v-text-field>
             </v-col>
 
@@ -91,6 +101,8 @@
                 rounded
                 type="password"
                 hide-details
+                dense
+                v-model="field.rePass"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -101,9 +113,7 @@
           <v-btn color="error" @click.native="dialog.signup = false"
             >Close</v-btn
           >
-          <v-btn color="primary" @click.native="dialog.signup = false"
-            >SIGNUP</v-btn
-          >
+          <v-btn color="primary" @click="doSignup()">SIGNUP</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -111,12 +121,71 @@
 </template>
 
 <script>
+// import axios from 'axios'
+// import NProgress from 'nprogress'
+import sw from "../../plugins/swal";
+import http from '../../plugins/http';
+
 export default {
   data: () => ({
     dialog: {
       signup: false,
     },
+    field: {
+      login:{
+        email: '',
+        password: ''
+      },
+      name: "",
+      email: "",
+      password: "",
+      rePass: "",
+    },
+    loading: {
+      signup: false,
+      login: false
+    },
   }),
+  methods: {
+    doSignup() {
+      if (this.field.password != this.field.rePass) {
+        return sw.toast({
+          title: "Password konfirmasi harus sama.",
+          icon: "error",
+        });
+      }    
+        // http.post()
+    },
+    doLogin(){
+      this.loading.login = true
+      let dataPost = {
+        email: this.field.login.email,
+        password: this.field.login.password
+      }
+      http.post(this.API_LINK + 'user/login', dataPost).then((res)=>{
+        this.loading.login = false
+        let data = res.data;
+
+        if(data.status == 0){
+          return sw.toast({
+            title: data.message.capitalize(),
+            icon: 'error'
+          })
+        }
+
+        return sw.show({
+          title: 'Berhasil !',
+          text: data.message,
+          icon: 'success'
+        }).then(()=>{
+          this.$router.replace('/')
+        })
+      })
+    }
+  },
+  created(){
+    console.log(this.API_LINK);
+  }
 };
 </script>
 

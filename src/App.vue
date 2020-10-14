@@ -15,3 +15,9 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="css">
+  .swal2-shown{
+    font-family: 'roboto';
+  }
+</style>

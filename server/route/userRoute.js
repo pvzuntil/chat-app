@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const mres = require('../lib/MRes')
 const mvalid = require('../lib/MValid')
-const { userValidation } = require('../validation')
+const { userValidation, loginValidation } = require('../validation')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -13,7 +13,7 @@ router.post('/signup', async (req, res) => {
 
     let { error } = userValidation(data)
     if (error) {
-        return res.status(400).send(mres(0, 'Validasi gagal !', mvalid(error)))
+        return res.status(200).send(mres(0, 'Validasi gagal !', mvalid(error)))
     }
 
     let getEmail = await UserModel.findOne({
@@ -35,12 +35,17 @@ router.post('/signup', async (req, res) => {
         let saveUser = await user.save()
         return res.status(200).send(mres(1, 'Berhasil menambah user', saveUser))
     } catch (error) {
-        return res.status(400).send(error)
+        return res.status(200).send(error)
     }
 })
 
 router.post('/login', async (req, res) => {
     let data = req.body
+
+    let { error } = loginValidation(data)
+    if (error) {
+        return res.status(200).send(mres(0, mvalid(error)))
+    }
 
     const getUser = await UserModel.findOne({
         email: data.email
@@ -56,7 +61,7 @@ router.post('/login', async (req, res) => {
     }
 
     let genjwt = jwt.sign({
-        id:getUser._id,
+        id: getUser._id,
         name: getUser.name,
         email: getUser.email
     }, process.env.JWT_SECERT)
