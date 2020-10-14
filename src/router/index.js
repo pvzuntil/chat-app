@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Cookies from 'js-cookie'
 import NProgress from 'nprogress';
+import httpAuth  from '../plugins/httpAuth'
 
 
 Vue.use(VueRouter)
@@ -50,10 +51,20 @@ router.beforeEach((to, _from, next) => {
     }
   }
 
+  if (isAuth) {    
+    httpAuth.post(new Vue().API_LINK + 'user').then(res=>{
+      if(res.data.status == 99){
+        Cookies.remove('IS_AUTH')
+        Cookies.remove('AUTH_TOKEN')
+        return next('/login')
+      }
+    })
+  }
+
   return next()
 })
 
-router.afterEach(()=>{
+router.afterEach(() => {
   NProgress.done()
 })
 
