@@ -41,7 +41,14 @@
                 @click="dialog.signup = true"
                 >SIGNUP</v-btn
               >
-              <v-btn color="primary" small rounded @click="doLogin()" :loading="loading.login">LOGIN</v-btn>
+              <v-btn
+                color="primary"
+                small
+                rounded
+                @click="doLogin()"
+                :loading="loading.login"
+                >LOGIN</v-btn
+              >
             </v-col>
           </v-row>
         </v-container>
@@ -62,7 +69,7 @@
                 rounded
                 hide-details
                 dense
-                v-model="field.name"
+                v-model="field.signup.name"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -75,7 +82,7 @@
                 rounded
                 hide-details
                 dense
-                v-model="field.email"
+                v-model="field.signup.email"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -89,7 +96,7 @@
                 type="password"
                 hide-details
                 dense
-                v-model="field.password"
+                v-model="field.signup.password"
               ></v-text-field>
             </v-col>
 
@@ -102,7 +109,7 @@
                 type="password"
                 hide-details
                 dense
-                v-model="field.rePass"
+                v-model="field.signup.rePass"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -113,7 +120,9 @@
           <v-btn color="error" @click.native="dialog.signup = false"
             >Close</v-btn
           >
-          <v-btn color="primary" @click="doSignup()">SIGNUP</v-btn>
+          <v-btn color="primary" @click="doSignup()" :loading="loading.signup"
+            >SIGNUP</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -124,7 +133,7 @@
 // import axios from 'axios'
 // import NProgress from 'nprogress'
 import sw from "../../plugins/swal";
-import http from '../../plugins/http';
+import http from "../../plugins/http";
 
 export default {
   data: () => ({
@@ -132,60 +141,91 @@ export default {
       signup: false,
     },
     field: {
-      login:{
-        email: '',
-        password: ''
+      login: {
+        email: "",
+        password: "",
       },
-      name: "",
-      email: "",
-      password: "",
-      rePass: "",
+      signup: {
+        name: "",
+        email: "",
+        password: "",
+        rePass: "",
+      },
     },
     loading: {
       signup: false,
-      login: false
+      login: false,
     },
   }),
   methods: {
     doSignup() {
-      if (this.field.password != this.field.rePass) {
+      if (this.field.signup.password != this.field.signup.rePass) {
         return sw.toast({
           title: "Password konfirmasi harus sama.",
           icon: "error",
         });
-      }    
-        // http.post()
-    },
-    doLogin(){
-      this.loading.login = true
-      let dataPost = {
-        email: this.field.login.email,
-        password: this.field.login.password
       }
-      http.post(this.API_LINK + 'user/login', dataPost).then((res)=>{
-        this.loading.login = false
+      this.loading.signup = true;
+      let dataPost = {
+        name: this.field.signup.name,
+        email: this.field.signup.email,
+        password: this.field.signup.password,
+      };
+      http.post(this.API_LINK + "user/signup", dataPost).then((res) => {
+        this.loading.signup = false;
         let data = res.data;
 
-        if(data.status == 0){
+        if (data.status == 0) {
           return sw.toast({
             title: data.message.capitalize(),
-            icon: 'error'
-          })
+            icon: "error",
+          });
         }
 
-        return sw.show({
-          title: 'Berhasil !',
-          text: data.message,
-          icon: 'success'
-        }).then(()=>{
-          this.$router.replace('/')
-        })
-      })
-    }
+        return sw
+          .show({
+            title: "Berhasil !",
+            text: data.message,
+            icon: "success",
+          })
+          .then(() => {
+            this.dialog.signup = false;
+          });
+      });
+      // http.post()
+    },
+    doLogin() {
+      this.loading.login = true;
+      let dataPost = {
+        email: this.field.login.email,
+        password: this.field.login.password,
+      };
+      http.post(this.API_LINK + "user/login", dataPost).then((res) => {
+        this.loading.login = false;
+        let data = res.data;
+
+        if (data.status == 0) {
+          return sw.toast({
+            title: data.message.capitalize(),
+            icon: "error",
+          });
+        }
+
+        return sw
+          .show({
+            title: "Berhasil !",
+            text: data.message,
+            icon: "success",
+          })
+          .then(() => {
+            this.$router.replace("/");
+          });
+      });
+    },
   },
-  created(){
+  created() {
     console.log(this.API_LINK);
-  }
+  },
 };
 </script>
 

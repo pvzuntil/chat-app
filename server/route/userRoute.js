@@ -13,7 +13,7 @@ router.post('/signup', async (req, res) => {
 
     let { error } = userValidation(data)
     if (error) {
-        return res.status(200).send(mres(0, 'Validasi gagal !', mvalid(error)))
+        return res.status(200).send(mres(0, mvalid(error)))
     }
 
     let getEmail = await UserModel.findOne({
@@ -33,7 +33,7 @@ router.post('/signup', async (req, res) => {
             password: hashPass
         })
         let saveUser = await user.save()
-        return res.status(200).send(mres(1, 'Berhasil menambah user', saveUser))
+        return res.status(200).send(mres(1, 'Berhasil mendaftar, silahkan login untuk melanjutkan !', saveUser))
     } catch (error) {
         return res.status(200).send(error)
     }
