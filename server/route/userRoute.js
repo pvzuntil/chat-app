@@ -4,8 +4,13 @@ const mvalid = require('../lib/MValid')
 const { userValidation, loginValidation } = require('../validation')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const authMiddleware = require('../middleware/authMiddleware')
 
 const UserModel = require('../model/UserModel')
+
+router.post('/', authMiddleware, (req, res)=>{
+    return res.send(req.currentUser)
+})
 
 router.post('/signup', async (req, res) => {
 
