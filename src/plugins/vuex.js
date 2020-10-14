@@ -7,7 +7,10 @@ vue.use(vuex)
 
 const state =  {
     drawer: true,
-    rightDrawer: true
+    rightDrawer: true,
+    sheet:{
+        search: false
+    }
 }
 
 const mutations = {

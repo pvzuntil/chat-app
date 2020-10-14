@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    
     <SystemBar />
     <AppBar />
     <ListChat />
@@ -17,9 +16,9 @@
                 </v-card>
               </v-row>
               <v-expand-transition>
-              <v-row class="px-8 mt-1 d-flex" v-if="hover">
-                <span style="font-size: 12px">10 Desember 1020 - 20:10</span>
-              </v-row>
+                <v-row class="px-8 mt-1 d-flex" v-if="hover">
+                  <span style="font-size: 12px">10 Desember 1020 - 20:10</span>
+                </v-row>
               </v-expand-transition>
             </span>
           </v-hover>
@@ -39,6 +38,7 @@
     </v-main>
 
     <ChatField />
+    <Search/>
   </div>
 </template>
 
@@ -50,15 +50,24 @@ import AppBar from "../components/AppBar";
 import ListChat from "../components/ListChatSidebar";
 import RightSidebar from "../components/RightSidebar";
 import ChatField from "../components/ChatField";
+import Search from "../components/HomePage/Search";
+
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     SystemBar,
     AppBar,
     ListChat,
     RightSidebar,
     ChatField,
+    Search
   },
-}
+};
 </script>
+
+<style lang="css">
+  .rounded-bottom-sheet{
+    border-top-left-radius: 20%;
+  }
+</style>

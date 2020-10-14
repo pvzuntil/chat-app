@@ -7,6 +7,7 @@
           <v-row>
             <v-col xs-12>
               <v-text-field
+                tabindex="1"
                 label="Masukkan Email"
                 outlined
                 hide-details
@@ -14,18 +15,22 @@
                 clearable
                 dense
                 v-model="field.login.email"
+                @keyup.enter="doLogin"
               ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col xs-12>
               <v-text-field
+                tabindex="2"
                 label="Masukkan Password"
                 outlined
                 rounded
                 hide-details
                 dense
                 v-model="field.login.password"
+                @keyup.enter="doLogin"
+                type="password"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -134,7 +139,7 @@
 // import NProgress from 'nprogress'
 import sw from "../../plugins/swal";
 import http from "../../plugins/http";
-import Cookie from 'js-cookie'
+import Cookie from "js-cookie";
 
 export default {
   data: () => ({
@@ -212,9 +217,9 @@ export default {
           });
         }
 
-        Cookie.set('AUTH_TOKEN', data.data.token)
-        Cookie.set('IS_AUTH', true)
-        
+        Cookie.set("AUTH_TOKEN", data.data.token);
+        Cookie.set("IS_AUTH", true);
+
         return sw
           .show({
             title: "Berhasil !",
