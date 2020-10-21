@@ -10,6 +10,9 @@ const state =  {
     rightDrawer: true,
     sheet:{
         search: false
+    },
+    dialog: {
+        profile: false
     }
 }
 
@@ -23,6 +26,9 @@ const mutations = {
     toggleRightDrawer(state) {
         state.rightDrawer = !state.rightDrawer
     },
+    toggleDialogProfile(state){
+        state.dialog.profile =  !state.dialog.profile        
+    }
 }
 
 const plugins = [new VuexPersistence().plugin]

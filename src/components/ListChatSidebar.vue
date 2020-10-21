@@ -19,7 +19,6 @@
         class="d-block text-center mx-auto mt-4 duration-avatar"
         color="grey darken-1"
         :size="avatar.size"
-        @click="console.log('sahs')"
         transition="scale-transition"
       >
         <v-img
@@ -43,7 +42,7 @@
           <div v-if="!drawer.left.mini">{{ currentUser.name }}</div>
         </v-scale-transition>
         <v-scale-transition>
-          <v-btn color="success" small v-if="!drawer.left.mini"
+          <v-btn color="success" small v-if="!drawer.left.mini" @click="$store.commit('toggleDialogProfile')"
             >EDIT PROFILE</v-btn
           >
         </v-scale-transition>
@@ -75,16 +74,20 @@
     </v-navigation-drawer>
 
     <ListChat />
+    <DialogProfile/>
   </v-navigation-drawer>
 </template>
 
 <script>
 import ListChat from "./ListChat";
+import DialogProfile from "./HomePage/Profile";
+
 import sw from "../plugins/swal";
 import Cookies from "js-cookie";
 export default {
   components: {
     ListChat,
+    DialogProfile
   },
   data: () => ({
     currentUser: null,
