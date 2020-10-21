@@ -3,6 +3,7 @@ const message = {
     email: (label) => `${label} must be a valid email.`,
     empty: (label) => `${label} is not allowed to be empty.`,
     min: (label, min) => `${label} length must be at least ${min} characters long.`,
+    string: (label) => `${label} must be a string.`,
 }
 const getMessage = function (obj) {
     let error = obj.details[0]
@@ -25,6 +26,9 @@ const getMessage = function (obj) {
         case 'string.min':
             let min = ctx.limit
             finalMessage = message.min(label, min)
+            break;
+        case 'string.base':
+            finalMessage = message.string(label)
             break;
     }
     return finalMessage

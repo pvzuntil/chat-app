@@ -232,9 +232,7 @@ export default {
       });
     },
   },
-  created() {
-    console.log(this.API_LINK);
-  },
+  created() {},
 };
 </script>
 

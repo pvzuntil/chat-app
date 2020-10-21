@@ -28,6 +28,11 @@ const validation = {
                 .min(6)
                 .label('password')
         }).validate(data)
+    },
+    searchUser(data){
+        return Joi.object({
+            key: Joi.string().required()
+        }).validate(data)
     }
 }
 

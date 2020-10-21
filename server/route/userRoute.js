@@ -1,17 +1,53 @@
 const router = require('express').Router()
 const mres = require('../lib/MRes')
 const mvalid = require('../lib/MValid')
-const { userValidation, loginValidation } = require('../validation')
+const { userValidation, loginValidation, searchUser } = require('../validation')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authMiddleware = require('../middleware/authMiddleware')
 
 const UserModel = require('../model/UserModel')
 
-router.post('/', authMiddleware, (req, res)=>{
-    return res.send(req.currentUser)
+router.post('/', authMiddleware, (req, res) => {
+    return res.send(mres(1, 'Access Granted !', req.currentUser))
 })
 
+router.post('/search', authMiddleware, async (req, res) => {
+    let data = req.body
+
+    let { error } = searchUser(data)
+    if (error) {
+        return res.status(200).send(mres(0, mvalid(error)))
+    }
+
+    try {
+        let getData = await UserModel.find({
+            $or: [{
+                email: {
+                    $regex: '.*' + data.key + '.*',
+                    $options: 'i'
+                }
+            },
+            {
+                name: {
+                    $regex: '.*' + data.key + '.*',
+                    $options: 'i'
+                }
+            }],
+            $and: [{
+                _id: {
+                    $ne: req.currentUser.id
+                }
+            }]
+        })
+
+        return res.status(200).send(mres(1, 'User search', getData))
+    } catch (error) {
+        return res.send(mres(98, 'Ada yang aneh !'))
+    }
+})
+
+// AUTHENTICATION
 router.post('/signup', async (req, res) => {
 
     let data = req.body

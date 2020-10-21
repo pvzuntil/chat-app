@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Cookies from 'js-cookie'
 import NProgress from 'nprogress';
 import httpAuth  from '../plugins/httpAuth'
+import store from '../plugins/vuex'
 
 
 Vue.use(VueRouter)
@@ -58,6 +59,9 @@ router.beforeEach((to, _from, next) => {
         Cookies.remove('AUTH_TOKEN')
         return next('/login')
       }
+
+      new Vue({store}).$store.state.currentUser = res.data.data
+      
     })
   }
 

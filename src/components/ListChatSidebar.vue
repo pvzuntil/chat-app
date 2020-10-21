@@ -22,13 +22,26 @@
         @click="console.log('sahs')"
         transition="scale-transition"
       >
-        <img
-          src="https://ui-avatars.com/api/?background=0D8ABC&color=fff"
+        <v-img
+          :src="`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${currentUser.name}`"
           alt=""
-        />
+        >
+          <template v-slot:placeholder>
+            <v-row class="fill-height ma-0" align="center" justify="center">
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+                size="20"
+              ></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
       </v-avatar>
 
       <div class="text-center mt-4">
+        <v-scale-transition>
+          <div v-if="!drawer.left.mini">{{ currentUser.name }}</div>
+        </v-scale-transition>
         <v-scale-transition>
           <v-btn color="success" small v-if="!drawer.left.mini"
             >EDIT PROFILE</v-btn
@@ -74,6 +87,7 @@ export default {
     ListChat,
   },
   data: () => ({
+    currentUser: null,
     avatar: {
       size: 36,
     },
@@ -131,6 +145,9 @@ export default {
           }
         });
     },
+  },
+  created() {
+    this.currentUser = this.$store.state.currentUser;
   },
 };
 </script>
